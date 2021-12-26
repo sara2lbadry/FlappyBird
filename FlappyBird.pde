@@ -18,22 +18,30 @@
   
 */
 
-PImage topPipe, botPipe, bird, background, snow, snow2;
+PImage topPipe, botPipe, christmasBird, hallowenBird, bird, background, hallowenBackground, christmasBackground, ghost, snow, snow2;
 PShape heart;
-int[] pipeX, pipeY, snowX, snowY, heartX, heartY;
-int i, speed = 1, g, birdFaceX, birdLegY, tries, gap, backgroundX, backgroundY, birdX, birdY, birdYS, life, pipeW, pipeH, score, pipeSpeed, distance, currPipe;
-boolean isLife, isStart;
+int[] pipeX, pipeY, snowX, snowY, heartX, heartY, ghostX, ghostY;
+int i, speed = 1, g, birdFaceX, birdLegY, tries, gap, backgroundX, backgroundY, birdX, birdY, birdYS, life, pipeW, pipeH, score, pipeSpeed, distance, currPipe, ghostNum;
+boolean isLife, isStart, christmasMode;
 
 void setup() {
   size(800, 800);
+  noStroke();
   topPipe = loadImage("topPipe.png");
   botPipe = loadImage("bottomPipe.png");
-  background = loadImage("img.jpg");
-  bird = loadImage("bird.png");  
+  hallowenBackground = loadImage("img4.jpg");
+  christmasBackground = loadImage("img.jpg");
+  christmasBird = loadImage("bird.png");
+  hallowenBird = loadImage("bird1.png");
+  ghost = loadImage("ghost1.png");
   snow = loadImage("snow.png");
   snow2 = loadImage("snow2.png");
   heart = loadShape("heart-svgrepo-com.svg");
-  background.resize(800, 800);
+  hallowenBackground.resize(800, 800);
+  christmasBackground.resize(800, 800);
+  christmasBird.resize(60, 50);
+  hallowenBird.resize(60, 50);
+  ghost.resize(60, 50);
   topPipe.resize(91, 445);
   botPipe.resize(91, 445);
   birdX = 200;
@@ -42,14 +50,16 @@ void setup() {
   pipeH = topPipe.height;
   tries =3;
   pipeSpeed = 4;
-  birdFaceX = birdX + bird.width;
-  birdLegY = birdY + bird.height;
+  birdFaceX = birdX + christmasBird.width;
+  birdLegY = birdY + christmasBird.height;
   g=1;
   gap = 300;
   distance = 250;
   currPipe = -1;
   isLife = true;
   isStart = true;
+  christmasMode = false;
+  ghostNum = 10;
   pipeX = new int[4];
   pipeY = new int[pipeX.length];
   for (i=0; i< pipeX.length; i++) {
@@ -64,6 +74,14 @@ void setup() {
     snowX[i] = (int)random(-10, width+10);
     snowY[i] = (int)random(-10, height);
   }
+  
+  ghostX = new int[ghostNum];
+  ghostY = new int[ghostNum];
+  for (int i = 0; i < ghostX.length; i++)
+  {
+    ghostX[i] = (int)random(width);
+    ghostY[i] = (int)random( height);
+  }
   heartX = new int[3];
   heartY = new int[heartX.length];
   for (int i = 0; i < heartX.length; i++)
@@ -74,16 +92,22 @@ void setup() {
   //print("height"+heart.width + "width"+heart.height);
 }
 void draw() {
-
+  //println(isStart);
   if (isStart) {
+    
     startScreen();
   } else if (tries>0) 
-  {
+  { 
     setBackground();
-    snowFall();
     setBird();
     jump();
-    movingPipes();
+    if(!christmasMode){
+      setGhost();
+    }
+    if (christmasMode){
+      movingPipes();
+      snowFall();
+    }
     setScore();
     birdHearts();
   } else 
@@ -93,16 +117,40 @@ void draw() {
 }
 
 void startScreen() {  
-  background(0, 255, 0);    
+  background(181, 202, 206);    
   fill(255);
   textSize(90);
   text ("START", 250, 400);
+  textSize(15);
+  fill(255,255,255, 100);
+  rect(250, 470, 120, 50);
+  rect(420, 470, 120, 50);
+  fill(255);
+  text ("Christmas Mode", 250, 500);
+  text ("Hallowen Mode", 420, 500);
   textSize(20);
-  text ("PRESS LEFT CLICK TO CONTINUE", 235, 450);
-  if (mousePressed && mouseButton == LEFT) {
+  text ("SELECT GAME MODE", 300, 450);
+  //text ("PRESS LEFT CLICK TO CONTINUE", 235, 450);
+  //println(mouseX + "sss"+ mouseY);
+  if (mouseX > 250 && mouseX < 370 && mouseY > 470 && mouseY < 520) {
+    if(mousePressed){
+      if (mouseButton == LEFT){
     isStart = false;
+    christmasMode = true;
+    //print("hhh");
+      }
+    }
   }
+  else if (mouseX > 420 && mouseX < 540 && mouseY > 470 && mouseY < 520) {
+    if(mousePressed){
+      if(mouseButton == LEFT){
+    isStart = false;
+    christmasMode = false;
+      }
+    }
+    }
 }
+
 
 void endScreen() {
   background(255, 0, 0);
@@ -134,6 +182,7 @@ void resetGame() {
 }
 void setBackground()
 {
+  background = christmasMode?  christmasBackground: hallowenBackground; 
   image(background, backgroundX, backgroundY);
   image(background, backgroundX + background.width, backgroundY);
   backgroundX = backgroundX - 1 ; //background speed control
@@ -180,6 +229,7 @@ void snowFall()
   }
 }
 void setBird() {
+  bird = christmasMode? christmasBird : hallowenBird;
   image(bird, birdX, birdY);
   birdY = birdY + birdYS;
   birdYS = birdYS + g;
@@ -187,6 +237,17 @@ void setBird() {
     //isLife = false;
     tries--;
   }
+}
+void setGhost(){
+  for (int i = 0; i < ghostX.length; i++)
+  {
+    image(ghost, ghostX[i], ghostY[i]);
+    ghostX[i] -= 5; 
+    if(ghostX[i] < -60){
+      ghostX[i] = width-10;
+    }
+  }
+  
 }
 
 void jump() {
