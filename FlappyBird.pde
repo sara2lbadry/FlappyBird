@@ -18,7 +18,7 @@
   
 */
 
-PImage topPipe, botPipe, christmasBird, hallowenBird, bird, background, hallowenBackground, christmasBackground, ghost, snow, snow2;
+PImage topPipe,birdDead, gameOver, botPipe, christmasBird, hallowenBird, bird, background, hallowenBackground, christmasBackground, ghost, snow, snow2;
 PShape heart;
 int[] pipeX, pipeY, snowX, snowY, heartX, heartY, ghostX, ghostY;
 int i, speed = 1, g, birdFaceX, birdLegY, tries, gap, backgroundX, backgroundY, birdX, birdY, birdYS, life, pipeW, pipeH, score, pipeSpeed, distance, currPipe, ghostNum;
@@ -36,12 +36,15 @@ void setup() {
   ghost = loadImage("ghost1.png");
   snow = loadImage("snow.png");
   snow2 = loadImage("snow2.png");
+  birdDead = loadImage("birdDead.png");
+  gameOver = loadImage("gameOver.png");
   heart = loadShape("heart-svgrepo-com.svg");
   hallowenBackground.resize(800, 800);
   christmasBackground.resize(800, 800);
   christmasBird.resize(60, 50);
   hallowenBird.resize(60, 50);
   ghost.resize(60, 50);
+  gameOver.resize(400,400);
   topPipe.resize(91, 445);
   botPipe.resize(91, 445);
   birdX = 200;
@@ -153,20 +156,67 @@ void startScreen() {
 
 
 void endScreen() {
-  background(255, 0, 0);
-  fill(0);
-  textSize(90);
-  text ("LOSER", 250, 400);
+  background(#5F9BB2);
+  image(gameOver, 200, -100);
+  //fill(0);
+  //textSize(90);
+  //text ("LOSER", 250, 400);
   textSize(25);
   text ("Score : "+score, 325,450);
   textSize(20);
   text ("PRESS RIGHT CLICK TO CONTINUE", 220, 500);  
   if (mousePressed && mouseButton == RIGHT) {      
-    resetGame();
+    resetGame(false);
   }
+  //homeScreen
+  textSize(40);
+  stroke(#80C2DB);
+  fill(#80C2DB);
+  strokeWeight(20);
+  strokeJoin(ROUND); // Round the stroke corners
+  rect(300,150,200,80);
+  noStroke();
+  fill(255);
+  text ("Home",350,200);
+  homeScreenButton();
+   //reset
+  textSize(40);
+  stroke(#80C2DB);
+  fill(#80C2DB);
+  strokeWeight(20);
+  strokeJoin(ROUND); // Round the stroke corners
+  rect(300,300,200,80);
+  noStroke();
+  fill(255);
+  text ("Reset",350,350);
+  resetButton();
 }
 
-void resetGame() {
+void resetButton(){
+  if(isMouseOver(300,300,200,80) == true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ' '))
+  {
+    println("reset pressed");
+    //click.play();
+    //jingleBells.play();
+    resetGame(false);
+  } 
+}
+
+void homeScreenButton(){
+  if(isMouseOver(300,150,200,80)== true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ENTER)){
+    println("home pressed");
+    //click.play();
+    resetGame(true);
+  } 
+}
+boolean isMouseOver(int x, int y, int w, int h){
+  if(mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h){
+    return  true;
+  }
+  return false;
+}
+
+void resetGame(boolean start) {
   isStart = true;
   isLife = true;
   tries = 3;
