@@ -17,12 +17,15 @@
   5- Change theme to Dark mode
   
 */
-
-PImage topPipe,birdDead, gameOver, botPipe, christmasBird, hallowenBird, bird, background, hallowenBackground, christmasBackground, ghost, snow, snow2;
+import processing.sound.*;
+SoundFile jingleBells , click , hit;
+PImage topPipe, botPipe, christmasBird, hallowenBird, bird, background, hallowenBackground, christmasBackground, ghost, snow, snow2,birdDead, gameOver, endScreen;
 PShape heart;
 int[] pipeX, pipeY, snowX, snowY, heartX, heartY, ghostX, ghostY;
 int i, speed = 1, g, birdFaceX, birdLegY, tries, gap, backgroundX, backgroundY, birdX, birdY, birdYS, life, pipeW, pipeH, score, pipeSpeed, distance, currPipe, ghostNum;
-boolean isLife, isStart, christmasMode;
+boolean isLife, isStart, christmasMode, isQuit;
+float angle = 0.0 , y = 200.0;
+String txt;
 
 void setup() {
   size(800, 800);
@@ -31,14 +34,23 @@ void setup() {
   botPipe = loadImage("bottomPipe.png");
   hallowenBackground = loadImage("img4.jpg");
   christmasBackground = loadImage("img.jpg");
-  christmasBird = loadImage("bird.png");
+  christmasBird = loadImage("birdLive.png");
   hallowenBird = loadImage("bird1.png");
   ghost = loadImage("ghost1.png");
   snow = loadImage("snow.png");
   snow2 = loadImage("snow2.png");
   birdDead = loadImage("birdDead.png");
   gameOver = loadImage("gameOver.png");
+  
+  click = new SoundFile(this, "mixkit-quick-win-video-game-notification-269.wav");
+  hit = new SoundFile(this, "hit.mp3");
+  jingleBells = new SoundFile(this, "Bobby_Helms_Jingle_Bell_Rock_Lyrics_.wav");
+  
+  String[] endScreenNames = loadStrings("endScreen.txt");
+  txt = join(endScreenNames , "\n");
+  
   heart = loadShape("heart-svgrepo-com.svg");
+  
   hallowenBackground.resize(800, 800);
   christmasBackground.resize(800, 800);
   christmasBird.resize(60, 50);
@@ -97,9 +109,9 @@ void setup() {
 void draw() {
   //println(isStart);
   if (isStart) {
-    
     startScreen();
-  } else if (tries>0) 
+  } 
+  else if (tries>0) 
   { 
     setBackground();
     setBird();
@@ -115,7 +127,12 @@ void draw() {
     }
     setScore();
     birdHearts();
-  } else 
+  }
+  else if(isQuit)
+  {
+    quitScreen();
+  }
+  else 
   {
     endScreen();
   }
@@ -236,18 +253,21 @@ christmasMode = true;
 
 }
 void endScreen() {
+  hit.stop();
   background(#5F9BB2);
+  jingleBells.stop();
+  
+  //game over image
+  gameOver.resize(400,400);
   image(gameOver, 200, -100);
-  //fill(0);
-  //textSize(90);
-  //text ("LOSER", 250, 400);
+  
+  //dead bird image
+  birdDead.resize(70,60);
+  image(birdDead, 600, 50);
+  
   textSize(25);
-  text ("Score : "+score, 325,450);
-  textSize(20);
-  text ("PRESS RIGHT CLICK TO CONTINUE", 220, 500);  
-  if (mousePressed && mouseButton == RIGHT) {      
-    resetGame(false);
-  }
+  text ("Score : "+score, 325,35);
+  
   //homeScreen
   textSize(40);
   stroke(#80C2DB);
@@ -258,7 +278,8 @@ void endScreen() {
   noStroke();
   fill(255);
   text ("Home",350,200);
-  homeScreenButton();
+  homeScreenButton(300,150,200,80);
+  
    //reset
   textSize(40);
   stroke(#80C2DB);
@@ -270,25 +291,23 @@ void endScreen() {
   fill(255);
   text ("Reset",350,350);
   resetButton();
+  
+  textSize(20);
+  text ("Press DELETE button to quit.\nYou also can press space to reset and enter to go to homeScreen.",5,600);
+  
+  //quit
+  textSize(40);
+  stroke(#80C2DB);
+  fill(#80C2DB);
+  strokeWeight(20);
+  strokeJoin(ROUND); // Round the stroke corners
+  rect(300,450,200,80);
+  noStroke();
+  fill(255);
+  text ("Quit",350,500);
+  quitButton(300,450,200,80);
 }
 
-void resetButton(){
-  if(isMouseOver(300,300,200,80) == true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ' '))
-  {
-    println("reset pressed");
-    //click.play();
-    //jingleBells.play();
-    resetGame(false);
-  } 
-}
-
-void homeScreenButton(){
-  if(isMouseOver(300,150,200,80)== true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ENTER)){
-    println("home pressed");
-    //click.play();
-    resetGame(true);
-  } 
-}
 boolean isMouseOver(int x, int y, int w, int h){
   if(mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h){
     return  true;
@@ -296,8 +315,87 @@ boolean isMouseOver(int x, int y, int w, int h){
   return false;
 }
 
+void homeScreenButton(int x, int y, int w, int h){
+  if(isMouseOver(x, y , w , h)== true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ENTER)){
+    println("home pressed");
+    click.play();
+    resetGame(true);
+  } 
+}
+
+void resetButton(){
+  if(isMouseOver(300,300,200,80) == true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ' '))
+  {
+    println("reset pressed");
+    click.play();
+    jingleBells.play();
+    resetGame(false);
+  } 
+}
+void quitButton(int x, int y, int w, int h){
+  if(isMouseOver(x, y , w , h)== true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == DELETE)){
+    println("quit pressed");  
+    click.play();
+    isQuit =true;
+  } 
+}
+
+void quitScreen()
+{
+  endScreen.resize(800,800);
+  image(endScreen, 0, 0);
+  textSize(40);
+  fill(255);
+  text(txt , 250 , y);
+  y-=1;
+  if(y <= -250)
+  {
+    y = 200;
+  }
+  textSize(10);
+  text ("Press ESC button to end the game.\nUse the left click to click on back.\nUse it also to click on home.",5,600);
+  
+  //Home
+  textSize(40);
+  stroke(#80C2DB);
+  fill(#80C2DB);
+  strokeWeight(20);
+  strokeJoin(ROUND); // Round the stroke corners
+  rect(600,500,100,50);
+  noStroke();
+  fill(255);
+  text ("Home",595,535);
+  
+  if(isMouseOver(600,500,100,50)== true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ENTER))
+  {
+    isQuit =false;
+    y = 200;
+    homeScreenButton(600,500,100,50);
+  }
+  
+  //back
+  textSize(40);
+  stroke(#80C2DB);
+  fill(#80C2DB);
+  strokeWeight(20);
+  strokeJoin(ROUND); // Round the stroke corners
+  rect(600,600,100,50);
+  noStroke();
+  fill(255);
+  text ("Back",595,635);
+  
+  if(isMouseOver(600,600,100,50)== true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ENTER))
+  {
+    click.play();
+    isQuit =false;
+    y = 200;
+    endScreen();
+    //homeScreenButton(600,600,100,50);
+  }
+}
+
 void resetGame(boolean start) {
-  isStart = true;
+  isStart = start;
   isLife = true;
   tries = 3;
   score =0;
@@ -310,6 +408,7 @@ void resetGame(boolean start) {
     pipeY[i] = (int)random(-350, 0);
   }
 }
+
 void setBackground()
 {
   background = christmasMode?  christmasBackground: hallowenBackground; 
