@@ -104,8 +104,10 @@ void draw() {
     setBackground();
     setBird();
     jump();
+    //nightMode();
+    //dayMode();
     if(!christmasMode){
-      setGhost();
+      nightMode();
     }
     if (christmasMode){
       movingPipes();
@@ -120,41 +122,119 @@ void draw() {
 }
 
 void startScreen() {  
-  background(181, 202, 206);    
-  fill(255);
-  textSize(90);
-  text ("START", 250, 400);
-  textSize(15);
-  fill(255,255,255, 100);
-  rect(250, 470, 120, 50);
-  rect(420, 470, 120, 50);
-  fill(255);
-  text ("Christmas Mode", 250, 500);
-  text ("Hallowen Mode", 420, 500);
-  textSize(20);
-  text ("SELECT GAME MODE", 300, 450);
-  //text ("PRESS LEFT CLICK TO CONTINUE", 235, 450);
-  //println(mouseX + "sss"+ mouseY);
-  if (mouseX > 250 && mouseX < 370 && mouseY > 470 && mouseY < 520) {
+  image(christmasBackground, 0, 0);
+  image(hallowenBackground, 405, 0);
+  fill(0, 150); //separator
+  rect(400, 0, 5, 800);
+  if (mouseX < 400 && mouseX > 0 ) { // startbgDay overlay
+    println(mouseX + "aaa");
+    dayMode();
+  }
+  else if (mouseX > 400 && mouseX < width ){
     if(mousePressed){
-      if (mouseButton == LEFT){
-    isStart = false;
-    christmasMode = true;
-    //print("hhh");
-      }
+      println(mouseX + "aaa"); 
+      isStart = false;
+      nightMode();
     }
   }
-  else if (mouseX > 420 && mouseX < 540 && mouseY > 470 && mouseY < 520) {
-    if(mousePressed){
-      if(mouseButton == LEFT){
-    isStart = false;
-    christmasMode = false;
-      }
+  
+  if (mouseX > 405 && mouseX < 800 ) { // startBgNight overlay
+    fill(0, 90); 
+    rect(405, 0, 395, 800);
+    fill(0, 100);  //play button
+    ellipse(600, 400, 50, 50);
+    fill(255, 150);
+    triangle(590, 390, 590, 410, 612, 400);
+    fill(255, 200); //mode instructions
+    textSize(50);
+    text ("Hallowen", 485, 200);
+    fill(255, 200);
+    textSize(20);
+    text ("Mode 2", 565, 250);
+    textSize(25);
+    text ("PRESS PLAY button to START", 435, 350);
+    if (mouseX > 550 && mouseX < 650 && mouseY < 450 && mouseY > 350) {
+      fill(0, 100);  //play button
+      ellipse(600, 400, 60, 60);
+      fill(255, 150);
+      triangle(590, 390, 590, 410, 612, 400);
     }
-    }
+  }
+  
+  
+  //background(181, 202, 206);    
+  //fill(255);
+  //textSize(90);
+  //text ("START", 250, 400);
+  //textSize(15);
+  //fill(255,255,255, 100);
+  //rect(250, 470, 120, 50);
+  //rect(420, 470, 120, 50);
+  //fill(255);
+  //text ("Christmas Mode", 250, 500);
+  //text ("Hallowen Mode", 420, 500);
+  //textSize(20);
+  //text ("SELECT GAME MODE", 300, 450);
+  ////text ("PRESS LEFT CLICK TO CONTINUE", 235, 450);
+  ////println(mouseX + "sss"+ mouseY);
+  //if (mouseX > 250 && mouseX < 370 && mouseY > 470 && mouseY < 520) {
+  //  if(mousePressed){
+  //    if (mouseButton == LEFT){
+  //  isStart = false;
+  //  christmasMode = true;
+  //  //print("hhh");
+  //    }
+  //  }
+  //}
+  //else if (mouseX > 420 && mouseX < 540 && mouseY > 470 && mouseY < 520) {
+  //  if(mousePressed){
+  //    if(mouseButton == LEFT){
+  //  isStart = false;
+  //  christmasMode = false;
+  //    }
+  //  }
+  //  }
+}
+
+void nightMode(){
+  christmasMode = false;
+  setGhost();
+
 }
 
 
+void dayMode()
+{
+christmasMode = true;
+  fill(0, 90); 
+    rect(0, 0, 400, 800);
+    fill(0, 100);  //play button
+    ellipse(200, 400, 50, 50);
+    fill(255, 150); 
+    triangle(190, 390, 190, 410, 212, 400);
+    fill(255, 200); //mode instructions
+    textSize(50);
+    text ("Christmas", 70, 200);
+    fill(255, 200);
+    textSize(20);
+    text ("Mode 1", 160, 250);
+    textSize(25);
+    text ("PRESS PLAY button to START", 30, 350);
+    if (mouseX > 150 && mouseX < 250 && mouseY < 450 && mouseY > 350) 
+    {
+      fill(0, 100);  //play button
+      ellipse(200, 400, 60, 60);
+      fill(255, 150); 
+      triangle(190, 390, 190, 410, 212, 400);
+      if (mousePressed ) 
+      {
+        //click.play();
+        isStart = false; 
+        //jingleBells.play();
+      }
+    }
+
+}
 void endScreen() {
   background(#5F9BB2);
   image(gameOver, 200, -100);
