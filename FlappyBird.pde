@@ -1,6 +1,4 @@
-
 /*
-
 - Flappy Bird Part 1 (Christmas Mode)
 - Team Member 
   1- Muhammad Gamal
@@ -18,13 +16,14 @@
   
 */
 import processing.sound.*;
-SoundFile jingleBells , click , hit;
+SoundFile jingleBells , click , hit , eat;
 PImage topPipe, botPipe, bird, background, snow, snow2, startbgDay, startBgNight, birdDead , creepyGhost, cuteGhost, gameOver , team  ,  christmasBackground, hallowenBackground, christmasBird, hallowenBird;
 PShape heart;
-int[] pipeX, pipeY, snowX, snowY, heartX, heartY, ghostX, ghostY, creepyGhostX, creepyGhostY, cuteGhostX, cuteGhostY;
-int i, speed = 1, g, birdFaceX, birdLegY, tries, gap, backgroundX, backgroundY, birdX, birdY, birdYS, life, pipeW, pipeH, score, pipeSpeed, distance, currPipe,ghostNum;
-boolean isLife, isStart,isQuit , christmasMode;
-float angle = 0.0 , y = 200.0;
+int[] pipeX, pipeY, snowX, snowY, heartX, heartY, ghostX, ghostY, creepyGhostX, creepyGhostY, cuteGhostX, cuteGhostY  ;
+
+int i, speed = 1, g, birdFaceX, hallowenBirdFaceX, tries, gap, backgroundX, backgroundY, birdX, life, pipeW, pipeH, score, pipeSpeed , ghostSpeed, distance, currPipe,ghostNum;
+boolean isLife, isStart,isQuit , christmasMode , creepyGhostAttack[];
+float angle = 0.0 , rotationAngle = 0.1, y = 200.0 , birdY, birdYS ,hallowenBirdFaceY;
 String txt;
 int frame;
 
@@ -34,7 +33,7 @@ void setup() {
   topPipe = loadImage("topPipe.png");
   botPipe = loadImage("bottomPipe.png");
   //background = loadImage("img.jpg");
-  hallowenBackground = loadImage("img4.jpg");
+  hallowenBackground = loadImage("hallowen.jpg");
   christmasBackground = loadImage("img.jpg");
   hallowenBird = loadImage("bird2.png");
   christmasBird = loadImage("birdLive.png");
@@ -43,6 +42,7 @@ void setup() {
   cuteGhost = loadImage("cuteGhost3.png");
   click = new SoundFile(this, "mixkit-quick-win-video-game-notification-269.wav");
   hit = new SoundFile(this, "hit.mp3");
+  eat = new SoundFile(this, "eat.wav");
   gameOver = loadImage("gameOver.png");
   team = loadImage("1.jpg");
   team.resize(800,800);
@@ -69,8 +69,10 @@ void setup() {
   pipeH = topPipe.height;
   tries =3;
   pipeSpeed = 4;
+  ghostSpeed = 6;
   birdFaceX = birdX + christmasBird.width;
-  birdLegY = birdY + christmasBird.height;
+  hallowenBirdFaceX = birdX + hallowenBird.width;
+  hallowenBirdFaceY = birdY + hallowenBird.height;
   g=1;
   gap = 300;
   distance = 250;
@@ -88,7 +90,7 @@ void setup() {
   // 4 creepy, 4 cute. total 8
   ghostNum = 4;
   frame = 0;
-
+   
   creepyGhostX = new int[ghostNum];
   creepyGhostY = new int[ghostNum];
   for (int i = 0; i < creepyGhostX.length; i++)
@@ -104,6 +106,12 @@ void setup() {
   {
     cuteGhostX[i] = (int)random(width);
     cuteGhostY[i] = (int)random( height);
+  }
+  
+  creepyGhostAttack = new boolean[ghostNum] ;
+  for (int i = 0 ; i< ghostNum ; i++) 
+  {
+    creepyGhostAttack[i] = true;
   }
 
   snowY = new int [30];
@@ -232,9 +240,9 @@ void nightMode ()
 
 void endScreen() {
   hit.stop();
+  eat.stop();
   background(#5F9BB2);
   jingleBells.stop();
-  
   //game over image
   gameOver.resize(400,400);
   image(gameOver, 200, -100);
@@ -242,6 +250,7 @@ void endScreen() {
   //dead bird image
   birdDead.resize(70,60);
   image(birdDead, 600, 50);
+  rotationAngle += 0.1;
   
   //homeScreen
   textSize(40);
@@ -289,20 +298,22 @@ void setGhost(){
   
   for (int i = 0; i < creepyGhostX.length; i++)
   {
-    creepyGhostX[i] -= 5; 
+    creepyGhostX[i] -= ghostSpeed; 
     if(creepyGhostX[i] < -80 ){
       creepyGhostX[i] = width;
       creepyGhostY[i] = (int) random(height);
+      creepyGhostAttack[i] = true;
     }
     
-   
+    
     image(creepyGhost, creepyGhostX[i], creepyGhostY[i]);
-     creepyGhostY[i] -= (int) random(2);
+    creepyGhostY[i] --;
+    checkLife2(i);
   }
   
   for (int i = 0; i < cuteGhostX.length; i++)
   {
-    cuteGhostX[i] -= 5; 
+    cuteGhostX[i] -= ghostSpeed; 
     if(cuteGhostX[i] < -80 ){
       //cuteGhostX[i] = width-10;
       cuteGhostX[i] = width;
@@ -310,10 +321,33 @@ void setGhost(){
     }
   
     image(cuteGhost, cuteGhostX[i], cuteGhostY[i]);
-    cuteGhostY[i] += (int) random(2);
+    cuteGhostY[i] ++;
+    attackCuteGhost(i);
   }
   
+
 }
+
+void checkLife2 (int i)
+{
+   if ( creepyGhostAttack[i] && hallowenBirdFaceX >= creepyGhostX[i] && hallowenBirdFaceX <=creepyGhostX[i] + creepyGhost.width && abs(birdY - creepyGhostY[i]) <=hallowenBird.height )
+       {
+         tries--;
+         hit.play();
+         creepyGhostAttack[i] =false;
+       }
+}
+
+ void attackCuteGhost (int i)
+  {
+     if ( abs(birdX - cuteGhostX[i]) <= hallowenBird.width && abs(birdY - cuteGhostY[i]) <=hallowenBird.height )
+       {
+         eat.play();
+         score++;
+         cuteGhostX[i] = -100;
+         levelUp();
+       }
+  }
 
 void quitScreen()
 {
@@ -388,7 +422,8 @@ void resetButton(){
   {
     println("reset pressed");
     click.play();
-    jingleBells.play();
+    if (christmasMode)
+      jingleBells.play();
     resetGame(false);
   } 
 }
@@ -405,13 +440,50 @@ void resetGame(boolean start) {
   isLife = true;
   tries = 3;
   score =0;
+  birdX = 200;
+  birdY = 200; 
+ 
+  if (christmasMode)
+    resetPipes();
+  else  
+    resetGhosts();
+  
+}
+
+void resetPipes()
+{
   currPipe = -1;
   pipeSpeed = 4;
-  birdX = 200;
-  birdY = 200;            
+
   for (i=0; i< pipeX.length; i++) {
     pipeX[i] = width + distance*i;
     pipeY[i] = (int)random(-350, 0);
+  }
+}
+
+void resetGhosts ()
+{
+  ghostSpeed = 6;
+  
+  for (int i = 0; i < creepyGhostX.length; i++)
+  {
+    creepyGhostX[i] = (int)random(width);
+    creepyGhostY[i] = (int)random( height);
+    
+  }
+  
+  cuteGhostX = new int[ghostNum];
+  cuteGhostY = new int[ghostNum];
+  for (int i = 0; i < cuteGhostX.length; i++)
+  {
+    cuteGhostX[i] = (int)random(width);
+    cuteGhostY[i] = (int)random( height);
+  }
+  
+  creepyGhostAttack = new boolean[ghostNum] ;
+  for (int i = 0 ; i< ghostNum ; i++) 
+  {
+    creepyGhostAttack[i] = true;
   }
 }
 
@@ -477,16 +549,17 @@ void setBird() {
   bird = christmasMode? christmasBird : hallowenBird;
   image(bird, birdX, birdY);
   birdY = birdY + birdYS;
-  birdYS = birdYS + g;
-  if (birdY>= height || birdY < 0) {
-    //isLife = false;
+  birdYS += 0.8;
+  if (birdY + bird.height >= height) {
     tries--;
   }
+  
 }
 
 void jump() {
   if ((mousePressed && mouseButton == LEFT) || (keyPressed && key == ' ')) {
-    birdYS = -10;
+    if (birdY  + bird.height >= 10  )
+      birdYS = -10;
   }
 }
 
@@ -532,7 +605,11 @@ void setScore() {
 }
 
 void levelUp() {
-  if ((score%8) ==0) {// score+1 in case of hit at score 0 so 0%x will be 0 so will level up at 0 score doesn't make sense
-    pipeSpeed +=2;
+  if ((score%8) ==0 && pipeSpeed <= 15 ) {// score+1 in case of hit at score 0 so 0%x will be 0 so will level up at 0 score doesn't make sense
+    pipeSpeed += 2;
   }
+  if ((score % 8) ==0 && ghostSpeed <= 12){
+      ghostSpeed += 1;  
+  }
+    
 }
