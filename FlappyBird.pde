@@ -19,13 +19,14 @@
 */
 import processing.sound.*;
 SoundFile jingleBells , click , hit;
-PImage topPipe, botPipe, bird, background, snow, snow2, startbgDay, startBgNight, birdDead , ghost, gameOver , team  ,  christmasBackground, hallowenBackground ;
+PImage topPipe, botPipe, bird, background, snow, snow2, startbgDay, startBgNight, birdDead , creepyGhost, cuteGhost, gameOver , team  ,  christmasBackground, hallowenBackground, christmasBird, hallowenBird;
 PShape heart;
-int[] pipeX, pipeY, snowX, snowY, heartX, heartY, ghostX, ghostY;
+int[] pipeX, pipeY, snowX, snowY, heartX, heartY, ghostX, ghostY, creepyGhostX, creepyGhostY, cuteGhostX, cuteGhostY;
 int i, speed = 1, g, birdFaceX, birdLegY, tries, gap, backgroundX, backgroundY, birdX, birdY, birdYS, life, pipeW, pipeH, score, pipeSpeed, distance, currPipe,ghostNum;
 boolean isLife, isStart,isQuit , christmasMode;
 float angle = 0.0 , y = 200.0;
 String txt;
+int frame;
 
 void setup() {
   size(800, 800);
@@ -35,9 +36,11 @@ void setup() {
   //background = loadImage("img.jpg");
   hallowenBackground = loadImage("img4.jpg");
   christmasBackground = loadImage("img.jpg");
-  bird = loadImage("birdLive.png");
+  hallowenBird = loadImage("bird2.png");
+  christmasBird = loadImage("birdLive.png");
   birdDead = loadImage("birdDead.png");
-  ghost = loadImage("ghost1.png");
+  creepyGhost = loadImage("ghost4.png");
+  cuteGhost = loadImage("cuteghost2.png");
   click = new SoundFile(this, "mixkit-quick-win-video-game-notification-269.wav");
   hit = new SoundFile(this, "hit.mp3");
   gameOver = loadImage("gameOver.png");
@@ -50,9 +53,13 @@ void setup() {
   heart = loadShape("heart-svgrepo-com.svg");
   jingleBells = new SoundFile(this, "Bobby_Helms_Jingle_Bell_Rock_Lyrics_.wav");
   startbgDay = loadImage("christmas.png");
-  startBgNight =loadImage("hallowen.jpg");
+  startBgNight =loadImage("img4.jpg");
   startbgDay.resize(578, 800);
   startBgNight.resize(600, 800);
+  creepyGhost.resize(70, 70);
+  cuteGhost.resize(70, 70);
+  hallowenBird.resize(70,70);
+  //christmasBird.resize(70,70);
  // background.resize(800, 800);
   topPipe.resize(91, 445);
   botPipe.resize(91, 445);
@@ -62,8 +69,8 @@ void setup() {
   pipeH = topPipe.height;
   tries =3;
   pipeSpeed = 4;
-  birdFaceX = birdX + bird.width;
-  birdLegY = birdY + bird.height;
+  birdFaceX = birdX + christmasBird.width;
+  birdLegY = birdY + christmasBird.height;
   g=1;
   gap = 300;
   distance = 250;
@@ -78,14 +85,23 @@ void setup() {
     pipeX[i] = width + distance*i; //distance between each pipe on x-axis
     pipeY[i] = (int)random(-350, 0); // height will be displayed on screen -> min = 95 (-350+ pipeH), max = 445 (pipeH)
   }
-  ghostNum = 10;
+  ghostNum = 5;
+  frame = 0;
 
-  ghostX = new int[ghostNum];
-  ghostY = new int[ghostNum];
-  for (int i = 0; i < ghostX.length; i++)
+  creepyGhostX = new int[ghostNum];
+  creepyGhostY = new int[ghostNum];
+  for (int i = 0; i < creepyGhostX.length; i++)
   {
-    ghostX[i] = (int)random(width);
-    ghostY[i] = (int)random( height);
+    creepyGhostX[i] = (int)random(width);
+    creepyGhostY[i] = (int)random( height);
+  }
+  
+  cuteGhostX = new int[ghostNum];
+  cuteGhostY = new int[ghostNum];
+  for (int i = 0; i < cuteGhostX.length; i++)
+  {
+    cuteGhostX[i] = (int)random(width);
+    cuteGhostY[i] = (int)random( height);
   }
 
   snowY = new int [30];
@@ -133,6 +149,7 @@ void draw() {
   {
     endScreen();
   }
+  frame++;
   
 }
 
@@ -267,13 +284,31 @@ void endScreen() {
 }
 
 void setGhost(){
-  for (int i = 0; i < ghostX.length; i++)
+  
+  for (int i = 0; i < creepyGhostX.length; i++)
   {
-    image(ghost, ghostX[i], ghostY[i]);
-    ghostX[i] -= 5; 
-    if(ghostX[i] < -60){
-      ghostX[i] = width-10;
+    creepyGhostX[i] -= 5; 
+    if(creepyGhostX[i] < -80 ){
+      //creepyGhostX[i] = width-10;
+      creepyGhostX[i] = width;
+      creepyGhostY[i] = (int) random(height);
     }
+    //if (ghostX[i] >= width){
+     
+    //}
+    image(creepyGhost, creepyGhostX[i], creepyGhostY[i]);
+  }
+  
+  for (int i = 0; i < cuteGhostX.length; i++)
+  {
+    cuteGhostX[i] -= 5; 
+    if(cuteGhostX[i] < -80 ){
+      //cuteGhostX[i] = width-10;
+      cuteGhostX[i] = width;
+      cuteGhostY[i] = (int) random(height);
+    }
+  
+    image(cuteGhost, cuteGhostX[i], cuteGhostY[i]);
   }
   
 }
@@ -437,6 +472,7 @@ void snowFall()
   }
 }
 void setBird() {
+  bird = christmasMode? christmasBird : hallowenBird;
   image(bird, birdX, birdY);
   birdY = birdY + birdYS;
   birdYS = birdYS + g;
