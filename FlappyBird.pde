@@ -16,7 +16,7 @@
   
 */
 import processing.sound.*;
-SoundFile jingleBells , click , hit , eat;
+SoundFile jingleBells , click , hit , halloweenMusic, eat;
 PImage topPipe, botPipe, bird, background, snow, snow2, startbgDay, startBgNight, birdDead , creepyGhost, cuteGhost, gameOver , team  ,  christmasBackground, hallowenBackground, christmasBird, hallowenBird;
 PShape heart;
 int[] pipeX, pipeY, snowX, snowY, heartX, heartY, ghostX, ghostY, creepyGhostX, creepyGhostY, cuteGhostX, cuteGhostY  ;
@@ -42,6 +42,7 @@ void setup() {
   cuteGhost = loadImage("cuteGhost3.png");
   click = new SoundFile(this, "mixkit-quick-win-video-game-notification-269.wav");
   hit = new SoundFile(this, "hit.mp3");
+  halloweenMusic = new SoundFile(this, "halloween_music.wav");
   eat = new SoundFile(this, "eat.wav");
   gameOver = loadImage("gameOver.png");
   team = loadImage("1.jpg");
@@ -233,6 +234,7 @@ void nightMode ()
       {
         isStart = false;
         christmasMode = false;
+        halloweenMusic.loop();
       }
     }
   
@@ -241,8 +243,10 @@ void nightMode ()
 void endScreen() {
   hit.stop();
   eat.stop();
-  background(#5F9BB2);
+  halloweenMusic.stop();
   jingleBells.stop();
+
+  background(#5F9BB2);
   //game over image
   gameOver.resize(400,400);
   image(gameOver, 200, -100);
@@ -423,7 +427,9 @@ void resetButton(){
     println("reset pressed");
     click.play();
     if (christmasMode)
-      jingleBells.play();
+      jingleBells.loop();
+    else
+      halloweenMusic.loop();
     resetGame(false);
   } 
 }
