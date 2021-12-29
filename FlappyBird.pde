@@ -33,7 +33,7 @@ void setup() {
   topPipe = loadImage("topPipe.png");
   botPipe = loadImage("bottomPipe.png");
   //background = loadImage("img.jpg");
-  hallowenBackground = loadImage("hallowen.jpg");
+  hallowenBackground = loadImage("img4.jpg");
   christmasBackground = loadImage("img.jpg");
   hallowenBird = loadImage("bird2.png");
   christmasBird = loadImage("birdLive.png");
@@ -605,11 +605,11 @@ void setScore() {
 }
 
 void levelUp() {
-  if ((score%8) ==0 && pipeSpeed <= 15 ) {// score+1 in case of hit at score 0 so 0%x will be 0 so will level up at 0 score doesn't make sense
+  if (christmasMode && (score%8) ==0 && pipeSpeed <= 15 ) {// score+1 in case of hit at score 0 so 0%x will be 0 so will level up at 0 score doesn't make sense
     pipeSpeed += 2;
   }
-  if ((score % 8) ==0 && ghostSpeed <= 12){
-      ghostSpeed += 1;  
+ else if ((score % 8) ==0 && ghostSpeed <= 12){
+      ghostSpeed += 2;  
   }
     
 }
