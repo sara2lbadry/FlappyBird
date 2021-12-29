@@ -39,8 +39,8 @@ void setup() {
   hallowenBird = loadImage("bird2.png");
   christmasBird = loadImage("birdLive.png");
   birdDead = loadImage("birdDead.png");
-  creepyGhost = loadImage("ghost4.png");
-  cuteGhost = loadImage("cuteghost2.png");
+  creepyGhost = loadImage("ghost5.png");
+  cuteGhost = loadImage("cuteGhost3.png");
   click = new SoundFile(this, "mixkit-quick-win-video-game-notification-269.wav");
   hit = new SoundFile(this, "hit.mp3");
   gameOver = loadImage("gameOver.png");
@@ -57,7 +57,7 @@ void setup() {
   startbgDay.resize(578, 800);
   startBgNight.resize(600, 800);
   creepyGhost.resize(70, 70);
-  cuteGhost.resize(70, 70);
+  cuteGhost.resize(50, 50);
   hallowenBird.resize(70,70);
   //christmasBird.resize(70,70);
  // background.resize(800, 800);
@@ -85,7 +85,8 @@ void setup() {
     pipeX[i] = width + distance*i; //distance between each pipe on x-axis
     pipeY[i] = (int)random(-350, 0); // height will be displayed on screen -> min = 95 (-350+ pipeH), max = 445 (pipeH)
   }
-  ghostNum = 5;
+  // 4 creepy, 4 cute. total 8
+  ghostNum = 4;
   frame = 0;
 
   creepyGhostX = new int[ghostNum];
@@ -94,6 +95,7 @@ void setup() {
   {
     creepyGhostX[i] = (int)random(width);
     creepyGhostY[i] = (int)random( height);
+    
   }
   
   cuteGhostX = new int[ghostNum];
@@ -289,14 +291,13 @@ void setGhost(){
   {
     creepyGhostX[i] -= 5; 
     if(creepyGhostX[i] < -80 ){
-      //creepyGhostX[i] = width-10;
       creepyGhostX[i] = width;
       creepyGhostY[i] = (int) random(height);
     }
-    //if (ghostX[i] >= width){
-     
-    //}
+    
+   
     image(creepyGhost, creepyGhostX[i], creepyGhostY[i]);
+     creepyGhostY[i]--;
   }
   
   for (int i = 0; i < cuteGhostX.length; i++)
@@ -309,6 +310,7 @@ void setGhost(){
     }
   
     image(cuteGhost, cuteGhostX[i], cuteGhostY[i]);
+    cuteGhostY[i]++;
   }
   
 }
