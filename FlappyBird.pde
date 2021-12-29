@@ -297,7 +297,7 @@ void setGhost(){
     
    
     image(creepyGhost, creepyGhostX[i], creepyGhostY[i]);
-     creepyGhostY[i]--;
+     creepyGhostY[i] -= (int) random(2);
   }
   
   for (int i = 0; i < cuteGhostX.length; i++)
@@ -310,7 +310,7 @@ void setGhost(){
     }
   
     image(cuteGhost, cuteGhostX[i], cuteGhostY[i]);
-    cuteGhostY[i]++;
+    cuteGhostY[i] += (int) random(2);
   }
   
 }
