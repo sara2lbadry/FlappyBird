@@ -1,6 +1,6 @@
 class Ghost {
  
- private int ghostX = (int)random(width , width + 30) , ghostY = (int)random(height);
+ private int ghostX = (int)random(width/2 , width) , ghostY = (int)random(height);
  private boolean ghostAttack = true; 
  private int yChange ;  
  
