@@ -10,19 +10,19 @@
 - Future Work (Part2)
   1- Add Hallowen Mode
   2- Add Soundtrack
-  3- Edit Start and End Screen
+  3- Edit mode and End Screen
   4- Add Rotation
   5- Change theme to Dark mode
   
 */
 import processing.sound.*;
 SoundFile jingleBells , click , hit , halloweenMusic, eat;
-PImage topPipe, botPipe, bird, background, snow, snow2, startbgDay, startBgNight, birdDead , creepyGhost, cuteGhost, gameOver , team  ,  christmasBackground, hallowenBackground, christmasBird, hallowenBird;
+PImage start , topPipe, botPipe, bird, background, snow, snow2, modebgDay, modeBgNight, birdDead , creepyGhost, cuteGhost, gameOver , team  ,  christmasBackground, hallowenBackground, christmasBird, hallowenBird;
 PShape heart;
 int[] pipeX, pipeY, snowX, snowY, heartX, heartY ;
 ArrayList <Ghost> creepyGhosts , cuteGhosts ;
 int i, speed = 1, g, birdFaceX, hallowenBirdFaceX, tries, gap, backgroundX, backgroundY, birdX, life, pipeW, pipeH, score, pipeSpeed , distance, currPipe,ghostNum;
-boolean isLife, isStart,isQuit , christmasMode ;
+boolean isLife, isMode,isQuit , christmasMode , isStart;
 float angle = 0.0 , y = 200.0 , birdY, birdYS ,hallowenBirdFaceY;
 String txt;
 int frame;
@@ -31,6 +31,8 @@ void setup() {
 
   size(800, 800);
   smooth();
+  noStroke();
+  start = loadImage("Flappy-Bird-1.jpg");
   topPipe = loadImage("topPipe.png");
   botPipe = loadImage("bottomPipe.png");
   //background = loadImage("img.jpg");
@@ -39,8 +41,8 @@ void setup() {
   hallowenBird = loadImage("bird2.png");
   christmasBird = loadImage("birdLive.png");
   birdDead = loadImage("birdDead.png");
-  creepyGhost = loadImage("ghost5.png");
-  cuteGhost = loadImage("cuteGhost3.png");
+  creepyGhost = loadImage("bat3.png");
+  cuteGhost = loadImage("cuteghost2.png");
   click = new SoundFile(this, "mixkit-quick-win-video-game-notification-269.wav");
   hit = new SoundFile(this, "hit.mp3");
   halloweenMusic = new SoundFile(this, "halloween_music.wav");
@@ -54,15 +56,14 @@ void setup() {
   snow2 = loadImage("snow2.png");
   heart = loadShape("heart-svgrepo-com.svg");
   jingleBells = new SoundFile(this, "Bobby_Helms_Jingle_Bell_Rock_Lyrics_.wav");
-  startbgDay = loadImage("christmas.png");
-  startBgNight =loadImage("img4.jpg");
-  startbgDay.resize(578, 800);
-  startBgNight.resize(600, 800);
+  modebgDay = loadImage("img.jpg");
+  modeBgNight =loadImage("img4.jpg");
+  modebgDay.resize(578, 800);
+  modeBgNight.resize(600, 800);
   creepyGhost.resize(70, 70);
   cuteGhost.resize(50, 50);
   hallowenBird.resize(70,70);
-  //christmasBird.resize(70,70);
- // background.resize(800, 800);
+  start.resize(800,800);
   topPipe.resize(91, 445);
   botPipe.resize(91, 445);
   birdX = 200;
@@ -80,6 +81,7 @@ void setup() {
   currPipe = -1;
   isLife = true;
   isStart = true;
+  isMode = false;
   isQuit = false;
   christmasMode = true;
   pipeX = new int[4];
@@ -101,7 +103,6 @@ void setup() {
      cuteGhosts.add(new Ghost());
   }
   
-
   snowY = new int [30];
   snowX = new int [snowY.length];
   for (int i = 0; i < snowY.length; i++)
@@ -119,25 +120,29 @@ void setup() {
 }
 
 void draw() {
-
-  if (isStart) {
+  //start and instructions
+  if(isStart){
     startScreen();
-  } else if (tries>0) 
+  }
+  //Choose mode
+  else if (isMode) {
+    modeScreen();
+  } 
+  else if (tries>0) 
   {
     setBackground();
     setBird();
-    jump();
-    
+    jump();  
     if (christmasMode){
         snowFall();
         movingPipes();
     }
     else 
+    {
       setGhost();
-      
+    }
     setScore();
-    birdHearts();
-   
+    birdHearts();   
   }
   else if(isQuit)
   {
@@ -150,23 +155,32 @@ void draw() {
   frame++;
   
 }
+void startScreen()
+{
+  image(start, 0, 0);
+  //start modes
+  ellipse(400, 500, 50, 50);
+  fill(0, 150); 
+  triangle(390, 490, 390, 510, 415, 500);
+  startScreenButton();
+}
 
-void startScreen() {  
-  image(startbgDay, 0, 0);
-  image(startBgNight, 405, 0);
+void modeScreen() {  
+  image(modebgDay, 0, 0);
+  image(modeBgNight, 405, 0);
   fill(0, 150); //separator
   rect(400, 0, 5, 800);
-  if (mouseX < 400 && mouseX > 0 ) { // startbgDay overlay
+  if (mouseX < 400 && mouseX > 0 ) { // modebgDay overlay
     dayMode();
   }
   
-  if (mouseX > 405 && mouseX < 800 ) { // startBgNight overlay
+  if (mouseX > 405 && mouseX < 800 ) { // modeBgNight overlay
    nightMode();} 
  }
 
 void dayMode()
 {
-  fill(0, 90); 
+    fill(0, 90); 
     rect(0, 0, 400, 800);
     fill(0, 100);  //play button
     ellipse(200, 400, 50, 50);
@@ -174,12 +188,13 @@ void dayMode()
     triangle(190, 390, 190, 410, 212, 400);
     fill(255, 200); //mode instructions
     textSize(50);
-    text ("Christmas", 70, 200);
+    text ("Christmas", 70, 100);
     fill(255, 200);
     textSize(20);
-    text ("Mode 1", 160, 250);
+    text ("Mode 1", 160, 150);
     textSize(25);
-    text ("PRESS PLAY button to START", 30, 350);
+    text ("PRESS PLAY button to mode", 30, 250);
+    text ("Left click or press space to\nincrease score and avoid pipes.", 20, 600);
     if (mouseX > 150 && mouseX < 250 && mouseY < 450 && mouseY > 350) 
     {
       fill(0, 100);  //play button
@@ -190,7 +205,7 @@ void dayMode()
       {
         christmasMode = true;
         click.play();
-        isStart = false; 
+        isMode = false; 
         jingleBells.play();
       }
     }
@@ -206,25 +221,25 @@ void nightMode ()
     triangle(590, 390, 590, 410, 612, 400);
     fill(255, 200); //mode instructions
     textSize(50);
-    text ("Hallowen", 485, 200);
+    text ("Halloween", 485, 100);
     fill(255, 200);
     textSize(20);
-    text ("Mode 2", 565, 250);
+    text ("Mode 2", 565, 150);
     textSize(25);
-    text ("PRESS PLAY button to START", 435, 350);
+    text ("PRESS PLAY button to mode", 435, 250);
+    text ("Left click to eat ghosts,\nincrease score and avoid bats.", 425, 600);
     if (mouseX > 550 && mouseX < 650 && mouseY < 450 && mouseY > 350) {
       fill(0, 100);  //play button
       ellipse(600, 400, 60, 60);
       fill(255, 150);
       triangle(590, 390, 590, 410, 612, 400);
-       if (mousePressed ) 
+      if (mousePressed ) 
       {
-        isStart = false;
+        isMode = false;
         christmasMode = false;
         halloweenMusic.loop();
       }
-    }
-  
+    } 
 }
 
 void endScreen() {
@@ -242,7 +257,7 @@ void endScreen() {
   birdDead.resize(70,60);
   image(birdDead, 600, 50);
   
-  //homeScreen
+  //modeScreen
   textSize(40);
   stroke(#80C2DB);
   fill(#80C2DB);
@@ -251,8 +266,8 @@ void endScreen() {
   rect(300,150,200,80);
   noStroke();
   fill(255);
-  text ("Home",350,200);
-  homeScreenButton(300,150,200,80);
+  text ("Mode",350,200);
+  modeScreenButton(300,150,200,80);
   
   //reset
   textSize(40);
@@ -266,9 +281,6 @@ void endScreen() {
   text ("Reset",350,350);
   resetButton();
   
-  textSize(20);
-  text ("Press DELETE button to quit.\nYou also can press space to reset and enter to go to homeScreen.",5,600);
-  
   //quit
   textSize(40);
   stroke(#80C2DB);
@@ -281,55 +293,12 @@ void endScreen() {
   text ("Quit",350,500);
   quitButton(300,450,200,80);
   
+  fill(255);
+  textSize(20);
+  text ("Press DELETE button to quit.\nYou also can press space to reset and enter to go to modeScreen.",5,600);
+  
   //jingleBells.stop();
 }
-
-void setGhost(){
-  
-  for(int i = creepyGhosts.size() ; i< ghostNum ; i++)
-  {
-    creepyGhosts.add(new Ghost());
-  }
-  for (int i = 0; i < ghostNum ; i++)
-  {
-    Ghost ghost = creepyGhosts.get(i);
-    ghost.moveGhostX(); 
-    ghost.draw(creepyGhost);
-    ghost.moveGhostY();
-    checkLife2(ghost);
-  }
-  
-  for (int i = 0; i < cuteGhosts.size(); i++)
-  {
-    Ghost ghost = cuteGhosts.get(i);
-    ghost.moveGhostX(); 
-    ghost.draw(cuteGhost);
-    ghost.moveGhostY();
-    attackCuteGhost(ghost);
-  }
-  
-}
-
-void checkLife2 (Ghost ghost)
-{
-   if ( ghost.isAttacker() && hallowenBirdFaceX >= ghost.getGhostX() && hallowenBirdFaceX <=ghost.getGhostX() + creepyGhost.width && abs(birdY - ghost.getGhostY()) <=hallowenBird.height )
-       {
-         tries--;
-         hit.play();
-         ghost.setAttacker(false);
-       }
-}
-
- void attackCuteGhost (Ghost ghost)
-  {
-     if ( abs(birdX - ghost.getGhostX()) <= hallowenBird.width && abs(birdY - ghost.getGhostY()) <=hallowenBird.height )
-       {
-         eat.play();
-         score++;
-         ghost.remove();
-         levelUp();
-       }
-  }
 
 void quitScreen()
 {
@@ -343,11 +312,11 @@ void quitScreen()
   {
     y = 200;
   }
-  textSize(10);
-  text ("Press ESC button to end the game.\nUse the left click to click on back.\nUse it also to click on home.",5,600);
+  textSize(15);
+  text ("Press ESC button to end the game.\nUse the left click to click on back or mode.",5,600);
   
-  //Home
-  textSize(40);
+  //Start
+  textSize(30);
   stroke(#80C2DB);
   fill(#80C2DB);
   strokeWeight(20);
@@ -355,17 +324,19 @@ void quitScreen()
   rect(600,500,100,50);
   noStroke();
   fill(255);
-  text ("Home",595,535);
+  text ("Start",610,535);
   
   if(isMouseOver(600,500,100,50)== true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ENTER))
   {
     isQuit =false;
+    isMode = false;
     y = 200;
-    homeScreenButton(600,500,100,50);
+    isStart = true;
+    startScreen();
   }
   
   //back
-  textSize(40);
+  textSize(30);
   stroke(#80C2DB);
   fill(#80C2DB);
   strokeWeight(20);
@@ -373,7 +344,7 @@ void quitScreen()
   rect(600,600,100,50);
   noStroke();
   fill(255);
-  text ("Back",595,635);
+  text ("Back",610,635);
   
   if(isMouseOver(600,600,100,50)== true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ENTER))
   {
@@ -381,24 +352,43 @@ void quitScreen()
     isQuit =false;
     y = 200;
     endScreen();
-    //homeScreenButton(600,600,100,50);
   }
 }
 
 boolean isMouseOver(int x, int y, int w, int h){
   if(mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h){
+    fill(0,90);
+    rect(x , y , w, h);
     return  true;
   }
   return false;
 }
 
-void homeScreenButton(int x, int y, int w, int h){
+void startScreenButton()
+{
+  if (mouseX > 350 && mouseX < 450 && mouseY < 550 && mouseY > 450) 
+    {
+      fill(0, 100);  //play button
+      ellipse(400, 500, 60, 60);
+      if (mousePressed ) 
+      {
+        println("mode pressed");
+        isStart = false;
+        isMode = true;
+        click.play();
+        modeScreen();
+      }
+    }
+}
+
+void modeScreenButton(int x, int y, int w, int h){
   if(isMouseOver(x, y , w , h)== true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ENTER)){
-    println("home pressed");
+    println("mode pressed");
     click.play();
     resetGame(true);
   } 
 }
+
 void resetButton(){
   if(isMouseOver(300,300,200,80) == true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == ' '))
   {
@@ -411,6 +401,7 @@ void resetButton(){
     resetGame(false);
   } 
 }
+
 void quitButton(int x, int y, int w, int h){
   if(isMouseOver(x, y , w , h)== true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == DELETE)){
     println("quit pressed");  
@@ -419,8 +410,8 @@ void quitButton(int x, int y, int w, int h){
   } 
 }
 
-void resetGame(boolean start) {
-  isStart = start;
+void resetGame(boolean mode) {
+  isMode = mode;
   isLife = true;
   tries = 3;
   score =0;
@@ -567,6 +558,53 @@ void checkLife(int pipeX, int pipeY, int i) {
     levelUp();
   }
 }
+
+void setGhost(){
+  
+  for(int i = creepyGhosts.size() ; i< ghostNum ; i++)
+  {
+    creepyGhosts.add(new Ghost());
+  }
+  for (int i = 0; i < ghostNum ; i++)
+  {
+    Ghost ghost = creepyGhosts.get(i);
+    ghost.moveGhostX(); 
+    ghost.draw(creepyGhost);
+    ghost.moveGhostY();
+    checkLife2(ghost);
+  }
+  
+  for (int i = 0; i < cuteGhosts.size(); i++)
+  {
+    Ghost ghost = cuteGhosts.get(i);
+    ghost.moveGhostX(); 
+    ghost.draw(cuteGhost);
+    ghost.moveGhostY();
+    attackCuteGhost(ghost);
+  }
+  
+}
+
+void checkLife2 (Ghost ghost)
+{
+   if ( ghost.isAttacker() && hallowenBirdFaceX >= ghost.getGhostX() && hallowenBirdFaceX <=ghost.getGhostX() + creepyGhost.width && abs(birdY - ghost.getGhostY()) <=hallowenBird.height )
+       {
+         tries--;
+         hit.play();
+         ghost.setAttacker(false);
+       }
+}
+
+ void attackCuteGhost (Ghost ghost)
+  {
+     if ( abs(birdX - ghost.getGhostX()) <= hallowenBird.width && abs(birdY - ghost.getGhostY()) <=hallowenBird.height )
+       {
+         eat.play();
+         score++;
+         ghost.remove();
+         levelUp();
+       }
+  }
 
 
 void setScore() {
