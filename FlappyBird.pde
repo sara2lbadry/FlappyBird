@@ -127,8 +127,6 @@ void draw() {
     setBackground();
     setBird();
     jump();
-    setScore();
-    birdHearts();
     
     if (christmasMode){
         snowFall();
@@ -136,7 +134,10 @@ void draw() {
     }
     else 
       setGhost();
-
+      
+    setScore();
+    birdHearts();
+   
   }
   else if(isQuit)
   {
@@ -527,7 +528,7 @@ void setBird() {
 
 void jump() {
   if ((mousePressed && mouseButton == LEFT) || (keyPressed && key == ' ')) {
-    if (birdY  + bird.height >= 10  )
+    if (birdY - bird.height/2 >= 10  )
       birdYS = -10;
   }
 }
