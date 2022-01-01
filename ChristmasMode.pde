@@ -30,24 +30,24 @@ void dayMode()
     }
   }
 }
+
 void snowFall()
 {
   for (int i = 0; i < snowY.length; i++)
   {
+    pushMatrix();
+    translate(snowX[i], snowY[i]);
+    rotate(angle);
+    angle+=0.003;
+    
     if (i % 2 == 0)
     {
-      pushMatrix();
-      rotate(angle);
-      angle+=0.2;
-      image(snow, snowX[i], snowY[i]);
-      popMatrix();
-    } else {
-      pushMatrix();
-      rotate(angle);
-      angle+=0.2;
-      image(snow2, snowX[i], snowY[i]);
-      popMatrix();
+      image(snow, -snow.width/2, -snow.height/2);
+    } else {      
+      image(snow2, -snow2.width/2, -snow2.height/2);      
     }
+    popMatrix();
+    
     snowY[i] += 3;
     if (snowY[i] > 650)
     {
@@ -55,6 +55,7 @@ void snowFall()
     }
   }
 }
+
 void movingPipes() {
   for (i=0; i< pipeX.length; i++) {
     image(topPipe, pipeX[i], pipeY[i]);
@@ -89,6 +90,7 @@ void checkLife(int pipeX, int pipeY, int i) {
     levelUp();
   }
 }
+
 void resetPipes()
 {
   currPipe = -1;
