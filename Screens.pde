@@ -35,6 +35,15 @@ void endScreen() {
   //dead bird image
   birdDead.resize(70, 60);
   image(birdDead, 600, 50);
+  
+  //rotated bird
+  /*pushMatrix();
+  translate(403, 90);
+  rotate(angle);
+  angle+=0.05;
+  birdDead.resize(20, 20);
+  image(birdDead, -birdDead.width/2, -birdDead.height/2);
+  popMatrix();*/
 
   //modeScreen
   textSize(40);
