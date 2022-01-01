@@ -1,6 +1,6 @@
 class Ghost {
  
- private int ghostX = (int)random(width/2 , width) , ghostY = (int)random(height);
+ private int ghostX = (int)random(width , width +width/2) , ghostY = (int)random(height);
  private boolean ghostAttack = true; 
  private int yChange ;  
  
@@ -49,12 +49,12 @@ class Ghost {
    return this.ghostAttack;
  }
  
- void draw (PImage image)
+ void drawGhost (PImage image)
  {
    image(image , this.ghostX,this.ghostY);
  }
    
- void remove ()
+ void removeGhost ()
  {
     this.ghostX = -90;
     handleOutOfScreenGhost();
