@@ -26,7 +26,7 @@ void dayMode()
       christmasMode = true;
       click.play();
       isMode = false; 
-      jingleBells.play();
+      jingleBells.loop();
     }
   }
 }
@@ -39,15 +39,15 @@ void snowFall()
     translate(snowX[i], snowY[i]);
     rotate(angle);
     angle+=0.003;
-    
+
     if (i % 2 == 0)
     {
       image(snow, -snow.width/2, -snow.height/2);
     } else {      
-      image(snow2, -snow2.width/2, -snow2.height/2);      
+      image(snow2, -snow2.width/2, -snow2.height/2);
     }
     popMatrix();
-    
+
     snowY[i] += 3;
     if (snowY[i] > 650)
     {
@@ -76,7 +76,7 @@ void checkLife(int pipeX, int pipeY, int i) {
   {     
     if (birdY <= pipeY + pipeH    ||  birdY >= pipeY + pipeH + gap - bird.height )
     {
-      if (currPipe != i) {        
+      if (currPipe != i) {
         tries--; 
         hit.play();
         currPipe=i;
