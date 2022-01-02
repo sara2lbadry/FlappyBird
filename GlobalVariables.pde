@@ -8,6 +8,10 @@ int i, speed = 1, g, birdFaceX, hallowenBirdFaceX, tries, gap, backgroundX, back
 boolean isLife, isMode, isQuit, christmasMode, isStart;
 float angle = 0.0, y = 200.0, birdY, birdYS, hallowenBirdFaceY;
 String txt;
+int[] x;
+int[] yy;
+float angleBird = 0.0, gBird =0.05;
+PFont font;
 
 
 

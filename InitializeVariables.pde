@@ -1,6 +1,7 @@
 void init() {
   
   //size(800, 800);
+  font = loadFont("GillSansMT-Condensed-24.vlw");
   smooth();
   noStroke();
   start = loadImage("Flappy-Bird-1.jpg");
@@ -88,5 +89,14 @@ void init() {
   {
     heartX[i] = 25+ 30*i;
     heartY[i] = 25;
+  }
+  
+  x = new int[10];
+  yy = new int[10];
+
+  for (int i = 0; i < x.length; i++)
+  {
+    x[i] = (int)random( width-100);
+    yy[i] = (int)random(100, height/2);
   }
 }

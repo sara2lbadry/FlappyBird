@@ -45,17 +45,33 @@ void endScreen() {
   image(gameOver, 200, -100);
 
   //dead bird image
-  birdDead.resize(70, 60);
-  image(birdDead, 600, 50);
+  //birdDead.resize(70, 60);
+  //image(birdDead, 600, 50);
   
   //rotated bird
-  /*pushMatrix();
+  for(int i=0; i< x.length; i++){
+    pushMatrix();
+    translate(x[i], yy[i]);
+    rotate(angleBird);
+    background(0);
+    birdDead.resize(50, 40);
+    if(x[i] <-50 ){
+      x[i] = width;
+    }
+    image(birdDead, x[i], yy[i]);
+    // the gBird to slow down the bird rotation
+    angleBird += 0.01 * gBird;
+    popMatrix();
+  }
+
+ /* pushMatrix();
   translate(403, 90);
   rotate(angle);
-  angle+=0.05;
+  angle+=0.03;
   birdDead.resize(20, 20);
   image(birdDead, -birdDead.width/2, -birdDead.height/2);
-  popMatrix();*/
+  popMatrix();
+  */
 
   //modeScreen
   textSize(40);
@@ -66,7 +82,8 @@ void endScreen() {
   rect(300, 150, 200, 80);
   noStroke();
   fill(255);
-  text ("Mode", 350, 200);
+  //textAlign(CENTER);
+  text ("Mode", width/2, 200);
   modeScreenButton(300, 150, 200, 80);
 
   //reset
@@ -78,7 +95,7 @@ void endScreen() {
   rect(300, 300, 200, 80);
   noStroke();
   fill(255);
-  text ("Reset", 350, 350);
+  text ("Reset", width/2, 350);
   resetButton();
 
   //quit
@@ -90,12 +107,14 @@ void endScreen() {
   rect(300, 450, 200, 80);
   noStroke();
   fill(255);
-  text ("Quit", 350, 500);
+  text ("Quit", width/2, 500);
   quitButton(300, 450, 200, 80);
 
   fill(255);
   textSize(20);
-  text ("Use the LEFT click to click on quit.\nor reset or mode.", 5, 600);
+  textFont(font);
+  textAlign(CENTER);
+  text ("Use the LEFT click to click on quit.\nor reset or mode.", 400, 650);
 
   //jingleBells.stop();
 }
@@ -112,8 +131,9 @@ void quitScreen()
   {
     y = 200;
   }
-  textSize(15);
-  text ("Press ESC button to end the game.\nUse the LEFT click to click on back or mode.", 5, 600);
+  textSize(20);
+  textAlign(CENTER);
+  text ("Press ESC button to end the game.\nUse the LEFT click to click on back or mode.",  width/2, 600);
 
   //Start
   textSize(30);
