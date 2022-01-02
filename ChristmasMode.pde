@@ -13,7 +13,8 @@ void dayMode()
   textSize(20);
   text ("Mode 1", 160, 150);
   textSize(25);
-  text ("PRESS PLAY button to mode", 30, 250);
+  //textAlign(LEFT);
+  text ("PRESS TO PLAY", 100, 250);
   //text ("Left click or press space to\nincrease score and avoid pipes.", 20, 600);
   if (mouseX >= 175 && mouseX <= 225 && mouseY >= 375 && mouseY <= 475) 
   {

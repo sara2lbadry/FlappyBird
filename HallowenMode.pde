@@ -13,7 +13,7 @@ void nightMode ()
   textSize(20);
   text ("Mode 2", 565, 150);
   textSize(25);
-  text ("PRESS PLAY button to mode", 435, 250);
+  text ("PRESS TO PLAY", 515, 250);
   //text ("Left click to eat ghosts,\nincrease score and avoid bats.", 425, 600);
   if (mouseX > 550 && mouseX < 650 && mouseY < 450 && mouseY > 350) {
     fill(0, 100);  //play button
