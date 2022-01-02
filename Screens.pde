@@ -13,6 +13,7 @@ void modeScreen() {
   image(modeBgNight, 405, 0);
   fill(0, 150); //separator
   rect(400, 0, 5, 800);
+  modeScreenButton(400, 0, 5, 800);
   if (mouseX < 400 && mouseX > 0 ) { // modebgDay overlay
     dayMode();
   }
@@ -160,10 +161,10 @@ void startScreenButton()
     ellipse(400, 500, 60, 60);
     if (mousePressed ) 
     {
-      println("mode pressed");
+      println("startScreenButton pressed");
       isStart = false;
-      isMode = true;
       click.play();
+      resetGame(true);
       modeScreen();
     }
   }
