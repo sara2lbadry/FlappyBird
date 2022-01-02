@@ -56,8 +56,10 @@ void draw() {
 
 
 void resetGame(boolean mode) {
+  //isStart = true;
   isMode = mode;
   isLife = true;
+  isQuit =false;
   tries = 3;
   score =0;
   birdX = 200;
