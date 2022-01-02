@@ -1,5 +1,6 @@
 void startScreen()
 {
+  //println(mouseX + " aaa " + mouseY);
   image(start, 0, 0);
   image(help, 720, 10);
 
@@ -188,7 +189,7 @@ void helpButton()
   textSize(15);
   text ("Press LEFT CLICK or SPACE\navoid pipes & increase score", 570, 80);
   text ("Press LEFT CLICK or SPACE\neat ghosts, avoid bats & increase score", 570, 160);
-  textAlign(LEFT);
+  textAlign(CENTER);
 }
 
 
