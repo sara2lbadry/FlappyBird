@@ -34,7 +34,7 @@ void init() {
   //jingleBells = new SoundFile(this, "Bobby_Helms_Jingle_Bell_Rock_Lyrics_.wav");
   jingleBells = new SoundFile(this, "christmasSong.wav");
   help.resize(50, 50);
-  stars = loadImage("stars6.png");
+  stars = loadImage("stars6.PNG");
   buttonHome.resize(80, 80);
   buttonBack.resize(80, 80);
   buttonNext.resize(80, 80);
