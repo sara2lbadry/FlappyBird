@@ -1,6 +1,5 @@
 void init() {
 
-  //size(800, 800);
   smooth();
   noStroke(); 
   buttonBack = loadImage("buttonBack.png");
@@ -24,8 +23,6 @@ void init() {
   halloweenMusic = new SoundFile(this, "halloween_music.wav");
   eat = new SoundFile(this, "eat.wav");
   gameOver = loadImage("gameOver.png");
-  team = loadImage("1.jpg");
-  team.resize(800, 800);
   String[] teamNames = loadStrings("team.txt");
   txt = join(teamNames, "\n");
   snow = loadImage("snow.png");
@@ -101,14 +98,5 @@ void init() {
     heartY[i] = 25;
   }
 
-  //newly added
-  font = loadFont("GillSansMT-Condensed-24.vlw");
-  xx = new int[10];
-  yy = new int[10];
-
-  for (int i = 0; i < xx.length; i++)
-  {
-    xx[i] = (int)random( width/2);
-    yy[i] = (int)random(100, height/2);
-  }
+ 
 }
