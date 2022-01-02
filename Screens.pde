@@ -1,11 +1,20 @@
 void startScreen()
 {
   image(start, 0, 0);
+  image(help, 720, 10);
+  
   //start modes
+  fill(0, 100); 
   ellipse(400, 500, 50, 50);
-  fill(0, 150); 
   triangle(390, 490, 390, 510, 415, 500);
+  
+  //help button
+  if (mouseX > 720 && mouseX <= 770 && mouseY <= 60 && mouseY > 10) 
+  {
+      helpButton();   
+  }
   startScreenButton();
+
 }
 
 void modeScreen() {  
@@ -28,7 +37,9 @@ void endScreen() {
   halloweenMusic.stop();
   jingleBells.stop();
 
-  background(#5F9BB2);
+  background(#978FF5);
+  /*fill(0 , 60);
+  rect(0,0,800,800);*/
   //game over image
   gameOver.resize(400, 400);
   image(gameOver, 200, -100);
@@ -48,8 +59,8 @@ void endScreen() {
 
   //modeScreen
   textSize(40);
-  stroke(#80C2DB);
-  fill(#80C2DB);
+  stroke(#B89FE8);
+  fill(#B89FE8);
   strokeWeight(20);
   strokeJoin(ROUND); // Round the stroke corners
   rect(300, 150, 200, 80);
@@ -60,8 +71,8 @@ void endScreen() {
 
   //reset
   textSize(40);
-  stroke(#80C2DB);
-  fill(#80C2DB);
+  stroke(#B89FE8);
+  fill(#B89FE8);
   strokeWeight(20);
   strokeJoin(ROUND); // Round the stroke corners
   rect(300, 300, 200, 80);
@@ -72,8 +83,8 @@ void endScreen() {
 
   //quit
   textSize(40);
-  stroke(#80C2DB);
-  fill(#80C2DB);
+  stroke(#B89FE8);
+  fill(#B89FE8);
   strokeWeight(20);
   strokeJoin(ROUND); // Round the stroke corners
   rect(300, 450, 200, 80);
@@ -84,7 +95,7 @@ void endScreen() {
 
   fill(255);
   textSize(20);
-  text ("Press DELETE button to quit.\nYou also can press space to reset and enter to go to modeScreen.", 5, 600);
+  text ("Use the LEFT click to click on quit.\nor reset or mode.", 5, 600);
 
   //jingleBells.stop();
 }
@@ -102,12 +113,12 @@ void quitScreen()
     y = 200;
   }
   textSize(15);
-  text ("Press ESC button to end the game.\nUse the left click to click on back or mode.", 5, 600);
+  text ("Press ESC button to end the game.\nUse the LEFT click to click on back or mode.", 5, 600);
 
   //Start
   textSize(30);
-  stroke(#80C2DB);
-  fill(#80C2DB);
+  stroke(#B89FE8);
+  fill(#B89FE8);
   strokeWeight(20);
   strokeJoin(ROUND); // Round the stroke corners
   rect(600, 500, 100, 50);
@@ -126,15 +137,15 @@ void quitScreen()
 
   //back
   textSize(30);
-  stroke(#80C2DB);
-  fill(#80C2DB);
+  stroke(#B89FE8);
+  fill(#B89FE8);
   strokeWeight(20);
   strokeJoin(ROUND); // Round the stroke corners
   rect(600, 600, 100, 50);
   noStroke();
   fill(255);
   text ("Back", 610, 635);
-
+  
   if (isMouseOver(600, 600, 100, 50)== true && (mousePressed && mouseButton == LEFT))
   {
     click.play();
@@ -146,7 +157,7 @@ void quitScreen()
 
 boolean isMouseOver(int x, int y, int w, int h) {
   if (mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h) {
-    fill(0, 90);
+    fill(#B89FE8, 150);
     rect(x, y, w, h);
     return  true;
   }
@@ -155,11 +166,12 @@ boolean isMouseOver(int x, int y, int w, int h) {
 
 void startScreenButton()
 {
+   isStart = true;
   if (mouseX > 350 && mouseX < 450 && mouseY < 550 && mouseY > 450) 
   {
     fill(0, 100);  //play button
     ellipse(400, 500, 60, 60);
-    if (mousePressed ) 
+    if (mouseButton == LEFT) 
     {
       println("startScreenButton pressed");
       isStart = false;
@@ -192,9 +204,30 @@ void resetButton() {
 }
 
 void quitButton(int x, int y, int w, int h) {
-  if (isMouseOver(x, y, w, h)== true && (mousePressed && mouseButton == LEFT)  || (keyPressed && key == DELETE)) {
+  if (isMouseOver(x, y, w, h)== true && (mousePressed && mouseButton == LEFT)) {
     println("quit pressed");  
     click.play();
     isQuit =true;
+  }
+}
+
+void helpButton()
+{
+  isStart = false;
+  println("help pressed");
+  fill(0,90);
+  rect(420,30,300,190);
+  fill(255);
+  textSize(25);
+  text ("Christmas Mode:", 430, 55);
+  text ("Halloween Mode:", 430, 135);
+  textSize(15);
+  text ("Left click or press space to increase\nscore and avoid pipes.", 430, 80);
+  text ("Left click or press space to eat ghosts,\nincrease score and avoid bats.", 430, 160);
+  
+  if(! (mouseX > 720 && mouseX <= 770 && mouseY <= 60 && mouseY > 10) )
+  {
+    mouseX = mouseX;
+    mouseY = mouseY;
   }
 }
