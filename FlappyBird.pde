@@ -1,23 +1,7 @@
-/*
-- Flappy Bird Part 1 (Christmas Mode)
- - Team Member 
- 1- Muhammad Gamal
- 2- Manar Essam
- 3- Sara Muhammad El-Sayed
- 4- Eman Muhammad
- 5- Mina Ashraf
- 
- - Future Work (Part2)
- 1- Add Hallowen Mode
- 2- Add Soundtrack
- 3- Edit mode and End Screen
- 4- Add Rotation
- 5- Change theme to Dark mode
- 
- */
+
 
 void setup() {
-  size(800,800);
+  size(800, 800);
   init();
 }
 
@@ -43,20 +27,13 @@ void draw() {
     }
     setScore();
     birdHearts();
-  } else if (isQuit)
-  {
-    quitScreen();
-  } else 
+  } else
   {
     endScreen();
   }
 }
 
-
-
-
 void resetGame(boolean mode) {
-  //isStart = true;
   isMode = mode;
   isLife = true;
   isQuit =false;
