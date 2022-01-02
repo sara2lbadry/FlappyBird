@@ -31,6 +31,7 @@ void init() {
   jingleBells = new SoundFile(this, "christmasSong.wav");
   modebgDay = loadImage("img.jpg");
   modeBgNight =loadImage("img4.jpg");
+  stars = loadImage("stars6.PNG");
   help.resize(50, 50);
   modebgDay.resize(578, 800);
   modeBgNight.resize(600, 800);
@@ -96,7 +97,7 @@ void init() {
 
   for (int i = 0; i < x.length; i++)
   {
-    x[i] = (int)random( width-100);
+    x[i] = (int)random( width/2);
     yy[i] = (int)random(100, height/2);
   }
 }

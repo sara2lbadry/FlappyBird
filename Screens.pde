@@ -40,9 +40,9 @@ void endScreen() {
   background(#978FF5);
   /*fill(0 , 60);
   rect(0,0,800,800);*/
-  //game over image
-  gameOver.resize(400, 400);
-  image(gameOver, 200, -100);
+  ////game over image
+  //gameOver.resize(400, 400);
+  //image(gameOver, 200, -100);
 
   //dead bird image
   //birdDead.resize(70, 60);
@@ -56,8 +56,9 @@ void endScreen() {
     background(0);
     birdDead.resize(50, 40);
     if(x[i] <-50 ){
-      x[i] = width;
+      x[i] = width/2;
     }
+    
     image(birdDead, x[i], yy[i]);
     // the gBird to slow down the bird rotation
     angleBird += 0.01 * gBird;
@@ -72,11 +73,20 @@ void endScreen() {
   image(birdDead, -birdDead.width/2, -birdDead.height/2);
   popMatrix();
   */
+  
+  //game over image
+  gameOver.resize(400, 400);
+  image(gameOver, 200, -100);
+  stars.resize(1100, 900);
+  image(stars, 0, 0);
+
 
   //modeScreen
   textSize(40);
-  stroke(#B89FE8);
-  fill(#B89FE8);
+  stroke(#4C5055);
+  fill(#4C5055);
+  //stroke(#B89FE8);
+  //fill(#B89FE8);
   strokeWeight(20);
   strokeJoin(ROUND); // Round the stroke corners
   rect(300, 150, 200, 80);
@@ -88,8 +98,10 @@ void endScreen() {
 
   //reset
   textSize(40);
-  stroke(#B89FE8);
-  fill(#B89FE8);
+  stroke(#4C5055);
+  fill(#4C5055);
+  //stroke(#B89FE8);
+  //fill(#B89FE8);
   strokeWeight(20);
   strokeJoin(ROUND); // Round the stroke corners
   rect(300, 300, 200, 80);
@@ -100,8 +112,10 @@ void endScreen() {
 
   //quit
   textSize(40);
-  stroke(#B89FE8);
-  fill(#B89FE8);
+  stroke(#4C5055);
+  fill(#4C5055);
+  //stroke(#B89FE8);
+  //fill(#B89FE8);
   strokeWeight(20);
   strokeJoin(ROUND); // Round the stroke corners
   rect(300, 450, 200, 80);
@@ -177,7 +191,7 @@ void quitScreen()
 
 boolean isMouseOver(int x, int y, int w, int h) {
   if (mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h) {
-    fill(#B89FE8, 150);
+    fill(#4C5055, 150);
     rect(x, y, w, h);
     return  true;
   }

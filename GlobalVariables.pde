@@ -1,6 +1,6 @@
 import processing.sound.*;
 SoundFile jingleBells, click, hit, halloweenMusic, eat;
-PImage start, topPipe, botPipe, bird, background, snow, snow2, modebgDay, modeBgNight, birdDead, creepyGhost, cuteGhost, gameOver, team, christmasBackground, hallowenBackground, christmasBird, hallowenBird, help;
+PImage start, topPipe, botPipe, bird, background, snow, snow2, modebgDay, modeBgNight, birdDead, creepyGhost, cuteGhost, gameOver, team, christmasBackground, hallowenBackground, christmasBird, hallowenBird, help, stars;
 PShape heart;
 int[] pipeX, pipeY, snowX, snowY, heartX, heartY ;
 ArrayList <Ghost> creepyGhosts, cuteGhosts ;
