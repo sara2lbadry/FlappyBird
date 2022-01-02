@@ -1,9 +1,12 @@
 void init() {
-  
+
   //size(800, 800);
-  font = loadFont("GillSansMT-Condensed-24.vlw");
   smooth();
-  noStroke();
+  noStroke(); 
+  buttonBack = loadImage("buttonBack.png");
+  buttonHome = loadImage("buttonHome.png");
+  buttonStart = loadImage("buttonStart.png");
+  buttonNext = loadImage("buttonNext.png");
   start = loadImage("Flappy-Bird-1.jpg");
   help = loadImage("help3.png");
   topPipe = loadImage("topPipe.png");
@@ -28,11 +31,17 @@ void init() {
   snow = loadImage("snow.png");
   snow2 = loadImage("snow2.png");
   heart = loadShape("heart-svgrepo-com.svg");
+  //jingleBells = new SoundFile(this, "Bobby_Helms_Jingle_Bell_Rock_Lyrics_.wav");
   jingleBells = new SoundFile(this, "christmasSong.wav");
+  help.resize(50, 50);
+  stars = loadImage("stars6.png");
+  buttonHome.resize(80, 80);
+  buttonBack.resize(80, 80);
+  buttonNext.resize(80, 80);
+
+
   modebgDay = loadImage("img.jpg");
   modeBgNight =loadImage("img4.jpg");
-  stars = loadImage("stars6.PNG");
-  help.resize(50, 50);
   modebgDay.resize(578, 800);
   modeBgNight.resize(600, 800);
   creepyGhost.resize(70, 70);
@@ -91,13 +100,15 @@ void init() {
     heartX[i] = 25+ 30*i;
     heartY[i] = 25;
   }
-  
-  x = new int[10];
+
+  //newly added
+  font = loadFont("GillSansMT-Condensed-24.vlw");
+  xx = new int[10];
   yy = new int[10];
 
-  for (int i = 0; i < x.length; i++)
+  for (int i = 0; i < xx.length; i++)
   {
-    x[i] = (int)random( width/2);
+    xx[i] = (int)random( width/2);
     yy[i] = (int)random(100, height/2);
   }
 }
