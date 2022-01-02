@@ -4,6 +4,7 @@ void init() {
   smooth();
   noStroke();
   start = loadImage("Flappy-Bird-1.jpg");
+  help = loadImage("help3.png");
   topPipe = loadImage("topPipe.png");
   botPipe = loadImage("bottomPipe.png");
   //background = loadImage("img.jpg");
@@ -26,9 +27,10 @@ void init() {
   snow = loadImage("snow.png");
   snow2 = loadImage("snow2.png");
   heart = loadShape("heart-svgrepo-com.svg");
-  jingleBells = new SoundFile(this, "christmasSong.wav.wav");
+  jingleBells = new SoundFile(this, "christmasSong.wav");
   modebgDay = loadImage("img.jpg");
   modeBgNight =loadImage("img4.jpg");
+  help.resize(50, 50);
   modebgDay.resize(578, 800);
   modeBgNight.resize(600, 800);
   creepyGhost.resize(70, 70);
