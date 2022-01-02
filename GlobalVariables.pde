@@ -1,6 +1,7 @@
 import processing.sound.*;
 SoundFile jingleBells, click, hit, halloweenMusic, eat;
-PImage start, topPipe, botPipe, bird, background, snow, snow2, modebgDay, modeBgNight, birdDead, creepyGhost, cuteGhost, gameOver, team, christmasBackground, hallowenBackground, christmasBird, hallowenBird, help, stars;
+PImage start, topPipe, botPipe, bird, background, snow, snow2, modebgDay, modeBgNight, birdDead, creepyGhost, cuteGhost, gameOver, team, christmasBackground, hallowenBackground, christmasBird, hallowenBird, help, stars, buttonBack,buttonHome,buttonStart, buttonNext;
+
 PShape heart;
 int[] pipeX, pipeY, snowX, snowY, heartX, heartY ;
 ArrayList <Ghost> creepyGhosts, cuteGhosts ;
@@ -8,10 +9,11 @@ int i, speed = 1, g, birdFaceX, hallowenBirdFaceX, tries, gap, backgroundX, back
 boolean isLife, isMode, isQuit, christmasMode, isStart;
 float angle = 0.0, y = 200.0, birdY, birdYS, hallowenBirdFaceY;
 String txt;
-int[] x;
+int[] xx;
 int[] yy;
 float angleBird = 0.0, gBird =0.05;
 PFont font;
+
 
 
 
