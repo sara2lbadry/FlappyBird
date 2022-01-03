@@ -55,9 +55,9 @@ void setScore() {
 }
 
 void levelUp() {
-  if (christmasMode && (score%8) ==0 && pipeSpeed <= 15 ) {// score+1 in case of hit at score 0 so 0%x will be 0 so will level up at 0 score doesn't make sense
+  if (christmasMode && ((score+1)%8) ==0 && pipeSpeed <= 15 ) {// score+1 in case of hit at score 0 so 0%x will be 0 so will level up at 0 score doesn't make sense
     pipeSpeed += 2;
-  } else if ((score % 8) ==0 && ghostNum <= 10) {
+  } else if (((score+1) % 8) ==0 && ghostNum <= 10) {
     ghostNum += 2;
   }
 }
