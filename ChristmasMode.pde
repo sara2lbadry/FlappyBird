@@ -56,14 +56,20 @@ void snowFall()
   }
 }
 
-void movingPipes() {
+void movingPipes() {   
   for (i=0; i< pipeX.length; i++) {
     image(topPipe, pipeX[i], pipeY[i]);
     image(botPipe, pipeX[i], pipeY[i]+ gap + pipeH);    
     pipeX[i] -= pipeSpeed;
-    if (pipeX[i] < -(distance-((pipeX.length-1)*distance + pipeW - width)))
-    { //0d+w  1d+w  2d+w  3d+w  -> 0:91  250:342  500:591    
-      pipeX[i] = width;
+    if(pipeX[i] <= - pipeW ) //if full pipe left
+    { 
+      // each pipe is apart by distance 'd' from the second pipe 
+      // let w = width of screen
+      // at initalizing 4 pipes on x = 0d+w  1d+w  2d+w  3d+w 
+      // when the first pipe leave that's mean each pipe minused by w
+      // check if (pipeX[i] <= -pipeW) because we wait till the whole pipe to be left
+      // so, reset its x-coordinate to 4d to be after last pipe and - pipeW because we already checked if the whole pipe left   
+      pipeX[i] = (pipeX.length) * distance - pipeW ;
       currPipe = -1;
     }     
     checkLife(pipeX[i], pipeY[i], i);
