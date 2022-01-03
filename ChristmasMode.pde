@@ -82,7 +82,7 @@ void checkLife(int pipeX, int pipeY, int i) {
   {     
     if (birdY <= pipeY + pipeH    ||  birdY >= pipeY + pipeH + gap - bird.height )// touched pipe on y-axis
     {
-      if (currPipe != i) { // save pipe index to not enter this condition again while bird still inside
+      if (currPipe != i && isLife) { // save pipe index to not enter this condition again while bird still inside
         tries--; 
         hit.play(); // music
         currPipe=i;
