@@ -72,21 +72,24 @@ void movingPipes() {
 
 void checkLife(int pipeX, int pipeY, int i) {
 
-  if ((birdFaceX >= pipeX && birdFaceX <= pipeX + pipeW) || (birdX >= pipeX && birdX <= pipeX + pipeW))
+  if ((birdFaceX >= pipeX && birdFaceX <= pipeX + pipeW) || (birdX >= pipeX && birdX <= pipeX + pipeW))//inside region (x-axis) |  |
   {     
-    if (birdY <= pipeY + pipeH    ||  birdY >= pipeY + pipeH + gap - bird.height )
+    if (birdY <= pipeY + pipeH    ||  birdY >= pipeY + pipeH + gap - bird.height )// touched pipe on y-axis
     {
-      if (currPipe != i) {
+      if (currPipe != i) { // save pipe index to not enter this condition again while bird still inside
         tries--; 
-        hit.play();
+        hit.play(); // music
         currPipe=i;
         isLife = false;
       }
     }
-  }  
-
-  if ((pipeX+pipeW < birdX && tries>0 && pipeX+pipeW + pipeSpeed >= birdX )) { //195<pipeX<200 possibility of existance of 
-    score++;
+  }
+  
+  if ((pipeX+pipeW < birdX && pipeX+pipeW >= birdX - pipeSpeed) && tries>0) { //195<pipeX<200 possibility of existance of 
+    if (isLife) {
+      score++;
+    } 
+    isLife = true;
     levelUp();
   }
 }
