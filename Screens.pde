@@ -171,5 +171,5 @@ void helpButton()
   textSize(15);
   text ("Press LEFT CLICK or SPACE\navoid pipes & increase score", 570, 80);
   text ("Press LEFT CLICK or SPACE\neat ghosts, avoid bats & increase score", 570, 160);
-  textAlign(CENTER);
+  textAlign(LEFT);
 }
