@@ -26,6 +26,7 @@ void draw() {
       setGhost();
     }
     setScore();
+    setLevel();
     birdHearts();
   } else
   {
@@ -60,4 +61,11 @@ void levelUp() {
   } else if (((score+1) % 8) ==0 && ghostNum <= 10) {
     ghostNum += 2;
   }
+}
+
+void setLevel() {
+  textAlign(CENTER);
+  textSize(25);
+  text ("Level "+(int)((score/7)+1), width/2, 40);
+  textAlign(LEFT);
 }
