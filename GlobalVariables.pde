@@ -18,12 +18,12 @@ PFont font;
 
 void setBackground()
 { 
-  background = christmasMode?  christmasBackground: hallowenBackground; 
+  background = christmasMode?  christmasBackground: hallowenBackground; //checks which mode to set the background
   background.resize(800, 800);
-  image(background, backgroundX, backgroundY);
-  image(background, backgroundX + background.width, backgroundY);
-  backgroundX = backgroundX - 1 ; //background speed control
-  if (backgroundX < -background.width)
+  image(background, backgroundX, backgroundY); //1st bg image  starting from (0,0)
+  image(background, backgroundX + background.width, backgroundY);  //2nd bg image  starting from the end of the screen (bg.width,0)
+  backgroundX = backgroundX - 1 ; //background speed control >> motion in x-direction
+  if (backgroundX < -background.width)  //if background moved outside the screen
   {
     backgroundX = 0; //reset when first image is done
   }
@@ -31,9 +31,9 @@ void setBackground()
 
 void birdHearts() {
   if (tries == 3) {
-    for (int i = 0; i < heartX.length; i++)
+    for (int i = 0; i < heartX.length; i++)  //draw 3 hearts at position ( heartX[i], heartY[i]) with height & width= 25
     {
-      shape(heart, heartX[i], heartY[i], 25, 25);
+      shape(heart, heartX[i], heartY[i], 25, 25);  
     }
   } else if (tries == 2) {
     for (int i = 0; i < heartX.length -1; i++)
@@ -50,18 +50,18 @@ void birdHearts() {
 
 
 void setBird() {
-  bird = christmasMode? christmasBird : hallowenBird;
+  bird = christmasMode? christmasBird : hallowenBird;  //checks which mode to set it's bird
   image(bird, birdX, birdY);
-  birdY = birdY + birdYS;
-  birdYS += 0.8;
-  if (birdY + bird.height >= height) {
+  birdY = birdY + birdYS;  // moving bird downwards in y-direction
+  birdYS += 0.8;  //speed by which bird falls (gravity)
+  if (birdY + bird.height >= height) {  //prevents the bird from falling outside the window
     tries--;
   }
 }
 
 void jump() {
   if ((mousePressed && mouseButton == LEFT) || (keyPressed && key == ' ')) {
-    if (birdY - bird.height/2 >= 10  )
+    if (birdY - bird.height/2 >= 10  ) // prevents the bird from jumping beyond the specific height
       birdYS = -10;
   }
 }
